@@ -1,0 +1,73 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Main window capability set for McpGo-Windows. Grants the four permission domains required by the architecture: fs (job_status / job_logs and configuration files), shell (scoped execution of PowerShell and Chrome from the webview), process (application exit and relaunch) and http / network (OpenAI Platform API for Secure MCP Tunnels). Node.js, Python and nssm are launched exclusively from the Rust backend and are therefore intentionally absent from the webview shell scope (least privilege).",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "log:default",
+
+    "fs:default",
+    "fs:allow-appdata-read-recursive",
+    "fs:allow-appdata-write-recursive",
+    "fs:allow-resource-read-recursive",
+
+    "shell:default",
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "name": "powershell",
+          "command": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "args": true
+        },
+        {
+          "name": "pwsh",
+          "command": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+          "args": true
+        },
+        {
+          "name": "chrome",
+          "command": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+          "args": true
+        }
+      ]
+    },
+    {
+      "identifier": "shell:allow-spawn",
+      "allow": [
+        {
+          "name": "powershell",
+          "command": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "args": true
+        },
+        {
+          "name": "pwsh",
+          "command": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+          "args": true
+        },
+        {
+          "name": "chrome",
+          "command": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+          "args": true
+        }
+      ]
+    },
+    "shell:allow-stdin-write",
+    "shell:allow-kill",
+    "shell:allow-open",
+
+    "process:default",
+    "process:allow-exit",
+    "process:allow-restart",
+
+    {
+      "identifier": "http:default",
+      "allow": [
+        { "url": "https://api.openai.com" },
+        { "url": "https://api.openai.com/*" },
+        { "url": "https://*.openai.com" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+/* ============================================================================
+   McpGo for Windows - global styles (Phase 2)
+   ----------------------------------------------------------------------------
+   Tailwind CSS 4 uses CSS-first configuration: design tokens live in the
+   `@theme` block below. No tailwind.config.js is needed - content detection
+   is automatic in v4 and the Vite plugin (@tailwindcss/vite) replaces the
+   PostCSS pipeline.
+   ============================================================================ */
+
+@import "tailwindcss";
+
+@theme {
+  /* Brand accent: PowerShell-inspired sky/cyan for highlights. */
+  --color-brand-300: #7dd3fc;
+  --color-brand-400: #38bdf8;
+  --color-brand-500: #0ea5e9;
+
+  /* Monospace stack tuned for Windows first
+     (Cascadia Code ships with PowerShell 7). */
+  --font-mono: "Cascadia Code", "Cascadia Mono", Consolas, "JetBrains Mono",
+    ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* The application is dark by design (terminal-centric tool). */
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  @apply bg-slate-950 text-slate-100 font-sans antialiased;
+}

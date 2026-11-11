@@ -1,0 +1,61 @@
+# ============================================================================
+# McpGo for Windows - Rust backend manifest (Phase 1)
+# ----------------------------------------------------------------------------
+# Tauri 2 desktop application porting the macOS original (SwiftUI/AppKit,
+# LaunchAgents, Bash/Zsh) to Windows (React frontend + Rust backend,
+# Windows services, PowerShell, Playwright/CDP, OpenAI MCP tunnels).
+# ============================================================================
+
+[package]
+name = "mcpgo-windows"
+version = "0.1.0"
+description = "McpGo for Windows - Tauri port of the macOS MCP manager"
+authors = ["McpGo Windows Port Team"]
+license = "MIT"
+edition = "2021"
+
+# tauri-build validates tauri.conf.json, embeds the icons and generates the
+# permission schemas referenced by capabilities/default.json.
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+# Tauri core. No extra core features are required at this stage.
+tauri = { version = "2", features = [] }
+
+# Plugins backing the permission model in capabilities/default.json
+# (fs / shell / process / http) and the logging subsystem configured in
+# src/main.rs. A permission granted in a capability file only takes effect
+# when the corresponding plugin is registered on the Tauri builder.
+tauri-plugin-log = "2"
+tauri-plugin-shell = "2"
+tauri-plugin-process = "2"
+tauri-plugin-fs = "2"
+tauri-plugin-http = "2"
+
+# Serialisation of IPC payloads (EnvironmentReport, ComponentCheck).
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Facade logging macros (log::info!, log::warn!, log::error!) routed by
+# tauri-plugin-log to stdout, the webview devtools console and rotating
+# log files under %LOCALAPPDATA%\com.mcpgo.windows\logs.
+log = "0.4"
+
+# Service Control Manager protocol for the McpGo service worker
+# (src/services/worker.rs): the main executable re-invokes itself with
+# --service-host to host one service definition as a real Windows
+# service. Windows-only, matching the crate's own compile_error guard.
+windows-service = "0.7"
+
+[features]
+default = []
+# Enabled automatically by `tauri build` for production bundles.
+custom-protocol = ["tauri/custom-protocol"]
+
+[profile.release]
+# Desktop manager utility: optimise for small binary size.
+opt-level = "s"
+lto = true
+strip = true
+codegen-units = 1
