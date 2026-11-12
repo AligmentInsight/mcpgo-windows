@@ -130,9 +130,12 @@ Model Context Protocol (файловая система, git, fetch и т.п.) �
 
 ## 6. Что дальше
 
-- Обернуть домены McpGo (jobs, browser, tunnels) в собственный MCP-сервер
-  «швейцарский нож» — тогда агент сможет управлять инфраструктурой сам
-  (запускать задачи, поднимать сессии браузера, рестартовать туннели).
+- ~~Обернуть домены McpGo в собственный MCP-сервер «швейцарский нож»~~ —
+  готово: [`mcp-servers/swiss-knife`](../mcp-servers/swiss-knife/README.md)
+  (stdio, без зависимостей; `run_command`, `read_file`, `write_file`,
+  `list_dir`, `get_disks`). Подключайте его к клиенту напрямую или через
+  туннель (target — stdio-команда
+  `node <путь>\mcp-servers\swiss-knife\server.js`).
 - Добавить в определения служб health-пробы runtime-процессов и метрики
   в Environment.
 - CI: GitHub Actions для `cargo check` + `tsc` + статических
