@@ -32,8 +32,10 @@ use crate::tunnels::{
 /// directory), where profiles, secrets and logs live, the managed health
 /// port range and the OpenAI links (tunnel management, docs, releases).
 #[tauri::command]
-pub async fn tunnels_profile(registry: State<'_, TunnelRegistry>) -> TunnelsProfile {
-    registry.profile_info()
+pub async fn tunnels_profile(
+    registry: State<'_, TunnelRegistry>,
+) -> McpGoResult<TunnelsProfile> {
+    Ok(registry.profile_info())
 }
 
 /// Lists every tunnel definition joined with its live runtime state and

@@ -100,7 +100,7 @@ impl ServiceStore {
     /// (see `worker::service_log_path` - both sides must agree on
     /// `<services>\logs\<id>.log`).
     pub fn log_path(&self, id: &str) -> PathBuf {
-        self.dir.join("logs").join(format!("{id}.log"))
+        self.dir().join("logs").join(format!("{id}.log"))
     }
 
     /// Lists every definition joined with its SCM state, sorted by display

@@ -185,11 +185,17 @@ pub fn capture_child(mut child: Child, timeout: Duration) -> io::Result<Captured
     // result, an io failure inside a reader yields an empty buffer - in
     // both cases partial output beats failing the whole run.
     let stdout = String::from_utf8_lossy(
-        &stdout_reader.join().unwrap_or_default().unwrap_or_default(),
+        &stdout_reader
+            .join()
+            .unwrap_or(Ok(Vec::new()))
+            .unwrap_or_default(),
     )
     .into_owned();
     let stderr = String::from_utf8_lossy(
-        &stderr_reader.join().unwrap_or_default().unwrap_or_default(),
+        &stderr_reader
+            .join()
+            .unwrap_or(Ok(Vec::new()))
+            .unwrap_or_default(),
     )
     .into_owned();
 
