@@ -1,0 +1,61 @@
+name: Build Windows installer
+
+# Сборка готовых установщиков (MSI + NSIS) на серверах GitHub и публикация
+# на страницу Releases. Пользователю не нужны ни Rust, ни Node.js: достаточно
+# скачать McpGo_0.1.0_x64-setup.exe со страницы Releases и запустить его.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust artifacts
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Build application (MSI + NSIS)
+        run: npm run tauri build
+
+      - name: Publish to Releases
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v0.1.0
+          name: McpGo for Windows v0.1.0
+          artifacts: 'src-tauri/target/release/bundle/nsis/*.exe,src-tauri/target/release/bundle/msi/*.msi'
+          artifactContentType: 'application/octet-stream'
+          allowUpdates: true
+          replacesArtifacts: true
+          makeLatest: true
+          body: |
+            Готовые установщики McpGo для Windows.
+
+            **Самый простой путь**: скачайте `McpGo_0.1.0_x64-setup.exe`
+            и запустите двойным кликом. Нужен только Windows 10/11 x64 —
+            WebView2 Runtime ставится инсталлятором автоматически.
+
+            Как превратить ИИ-ассистента в агента с инструментами McpGo —
+            см. `docs/AGENT-SETUP.md` в репозитории.
+          token: ${{ secrets.GITHUB_TOKEN }}

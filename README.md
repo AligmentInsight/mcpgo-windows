@@ -7,8 +7,16 @@
 MCP Tunnels и фоновые Windows-службы. Порт macOS-проекта **McpGo** на
 Windows.
 
-**Статус: v0.1.0 — все шесть этапов дорожной карты выполнены.** Приложение
-собирается в dev-режиме и в дистрибутив (MSI + NSIS) на машине с Windows 10/11.
+**Статус: v0.1.0 — все шесть этапов дорожной карты выполнены.**
+
+## Установка
+
+**Самый простой путь — ничего устанавливать не нужно.** GitHub Actions
+собирает готовые установщики автоматически: откройте страницу
+[**Releases**](https://github.com/AligmentInsight/mcpgo-windows/releases),
+скачайте `McpGo_0.1.0_x64-setup.exe` и запустите двойным кликом.
+Требуется только Windows 10/11 x64 — WebView2 Runtime ставится
+инсталлятором автоматически.
 
 ## Возможности
 
@@ -26,13 +34,13 @@ Windows.
 Фронтенд вызывает команды и слушает события, прямые полномочия webview
 минимальны (`capabilities/default.json`).
 
-## Быстрый старт
+## Сборка из исходников
 
 Требования: Windows 10/11 x64, Rust 1.90+ (rustup, стабильный канал),
 Node.js 20.19+ (LTS). WebView2 Runtime ставится инсталлятором автоматически.
 
 ```powershell
-git clone https://github.com/<ваш-аккаунт>/mcpgo-windows.git
+git clone https://github.com/AligmentInsight/mcpgo-windows.git
 cd mcpgo-windows
 npm install
 npm run tauri dev

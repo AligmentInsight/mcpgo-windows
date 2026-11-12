@@ -34,7 +34,7 @@ MCP (Model Context Protocol) — стандарт, по которому кли�
 ### Шаг 1. Соберите и поставьте McpGo
 
 ```powershell
-git clone https://github.com/<аккаунт>/mcpgo-windows.git
+git clone https://github.com/AligmentInsight/mcpgo-windows.git
 cd mcpgo-windows
 npm install
 npm run tauri build      # MSI + NSIS-инсталлятор
